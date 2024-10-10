@@ -1,0 +1,38 @@
+{
+  "buildFiles": [
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "jentissdk::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "jentissdk",
+      "output": "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/build/intermediates/cxx/Debug/4u2a3l4r/obj/arm64-v8a/libjentissdk.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/felipecarvalho/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/Users/felipecarvalho/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}
