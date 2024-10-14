@@ -1,0 +1,3 @@
+/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/x86_64/CMakeFiles/jentissdk.dir
+/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/x86_64/CMakeFiles/edit_cache.dir
+/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/x86_64/CMakeFiles/rebuild_cache.dir

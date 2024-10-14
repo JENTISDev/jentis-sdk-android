@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "jentissdk::@6890427a1f51a3e7e1df": {
+      "artifactName": "jentissdk",
+      "abi": "armeabi-v7a",
+      "output": "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/build/intermediates/cxx/Debug/4u2a3l4r/obj/armeabi-v7a/libjentissdk.so",
+      "runtimeFiles": []
+    }
+  }
+}
