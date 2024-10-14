@@ -1,26 +1,24 @@
 package com.jentis.sdk.jentissdk
 
+import RootRepositoryImpl
 import android.content.Context
-import com.jentis.sdk.jentissdk.data.local.db.AppDatabase
-import com.jentis.sdk.jentissdk.domain.local.repository.UserRepository
-import com.jentis.sdk.jentissdk.domain.local.usercase.GetUserIdUseCase
-import com.jentis.sdk.jentissdk.domain.local.usercase.SaveUserIdUseCase
+import com.jentis.sdk.jentissdk.data.ApiClient
+import com.jentis.sdk.jentissdk.domain.local.prefs.PreferencesHelper
+import com.jentis.sdk.jentissdk.domain.network.usercases.SendRootDataUseCase
 import com.jentis.sdk.jentissdk.ui.JentisUtils
 import com.jentis.sdk.jentissdk.ui.lifecycle.CustomLifecycleOwner
+import com.jentis.sdk.jentissdk.ui.viewmodel.ConsentViewModel
 import com.jentis.sdk.jentissdk.ui.viewmodel.UserViewModel
 
 class JentisTrackService private constructor(context: Context) {
+    private val contextFinal: Context = context.applicationContext
     private lateinit var userViewModel: UserViewModel
-    private val contextFinal = context
     private var userId = ""
 
     private fun init() {
-        val userDao = AppDatabase.getDatabase(contextFinal).userDao()
-        val userRepository = UserRepository(userDao)
-        val saveUserIdUseCase = SaveUserIdUseCase(userRepository)
-        val getUserIdUseCase = GetUserIdUseCase(userRepository)
+        val preferencesHelper = PreferencesHelper(contextFinal)
 
-        userViewModel = UserViewModel(saveUserIdUseCase, getUserIdUseCase)
+        userViewModel = UserViewModel(preferencesHelper)
 
         getUserId()
 
@@ -36,8 +34,37 @@ class JentisTrackService private constructor(context: Context) {
         init()
     }
 
+    fun setConsent() {
+        setConsentId()
+    }
+
+    private fun setConsentId() {
+        val rootRepository = RootRepositoryImpl(ApiClient.api)
+        val sendRootDataUseCase = SendRootDataUseCase(rootRepository)
+        val preferencesHelper = PreferencesHelper(contextFinal)
+
+        val consentViewModel =
+            ConsentViewModel(preferencesHelper, sendRootDataUseCase)
+
+        val customLifecycleOwner = CustomLifecycleOwner()
+
+        consentViewModel.consentId.observe(customLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                val consentId = JentisUtils.getNewConsentID()
+                saveConsentId(consentId, consentViewModel)
+            }
+        }
+
+        consentViewModel.loadConsentId()
+        customLifecycleOwner.handleStart()
+    }
+
     private fun saveUserId(userId: String) {
         userViewModel.saveUserId(userId)
+    }
+
+    private fun saveConsentId(consentId: String, consentViewModel: ConsentViewModel) {
+        consentViewModel.sendRootData(consentId, getUserId())
     }
 
     fun getUserId(): String {
@@ -64,7 +91,7 @@ class JentisTrackService private constructor(context: Context) {
 
         fun initialize(context: Context): JentisTrackService {
             return INSTANCE ?: synchronized(this) {
-                val instance = JentisTrackService(context)
+                val instance = JentisTrackService(context.applicationContext)
                 INSTANCE = instance
                 instance
             }

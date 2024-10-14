@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jentis.sdk.jentissdk.domain.local.usercase.GetUserIdUseCase
-import com.jentis.sdk.jentissdk.domain.local.usercase.SaveUserIdUseCase
+import com.jentis.sdk.jentissdk.domain.local.prefs.PreferencesHelper
 import kotlinx.coroutines.launch
 
 class UserViewModel(
-    private val saveUserIdUseCase: SaveUserIdUseCase,
-    private val getUserIdUseCase: GetUserIdUseCase
+    private val preferencesHelper: PreferencesHelper
 ) : ViewModel() {
 
     private val _userId = MutableLiveData<String?>()
@@ -18,13 +16,13 @@ class UserViewModel(
 
     fun saveUserId(userId: String) {
         viewModelScope.launch {
-            saveUserIdUseCase(userId)
+            preferencesHelper.saveUserId(userId)
         }
     }
 
     fun loadUserId() {
         viewModelScope.launch {
-            val userID = getUserIdUseCase()
+            val userID = preferencesHelper.getUserId()
             _userId.postValue(userID)
         }
     }

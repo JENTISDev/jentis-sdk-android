@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/felipecarvalho/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "jentissdk::@6890427a1f51a3e7e1df": {
+      "artifactName": "jentissdk",
+      "abi": "x86_64",
+      "output": "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/build/intermediates/cxx/Debug/4u2a3l4r/obj/x86_64/libjentissdk.so",
+      "runtimeFiles": []
+    }
+  }
+}

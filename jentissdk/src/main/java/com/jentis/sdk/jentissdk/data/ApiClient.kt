@@ -1,4 +1,18 @@
 package com.jentis.sdk.jentissdk.data
 
-class ApiClient {
+import com.jentis.sdk.jentissdk.data.service.ApiService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+object ApiClient {
+    private val retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://qc3ipx.ckion-dev.jtm-demo.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val api: ApiService by lazy {
+        retrofit.create(ApiService::class.java)
+    }
 }
