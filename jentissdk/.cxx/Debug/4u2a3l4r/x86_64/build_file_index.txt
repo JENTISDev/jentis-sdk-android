@@ -1,0 +1,1 @@
+/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/CMakeLists.txt

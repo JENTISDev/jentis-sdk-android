@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/.cxx/Debug/4u2a3l4r/armeabi-v7a",
+  "command": "/Users/felipecarvalho/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi28 --sysroot=/Users/felipecarvalho/Library/Android/sdk/ndk/25.1.8937393/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Djentissdk_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -fno-limit-debug-info  -fPIC -o CMakeFiles/jentissdk.dir/jentissdk.cpp.o -c /Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/jentissdk.cpp",
+  "file": "/Users/felipecarvalho/AndroidStudioProjects/JentisSDK/jentissdk/src/main/cpp/jentissdk.cpp"
+}
+]
