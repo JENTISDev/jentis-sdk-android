@@ -39,7 +39,7 @@ class JentisTrackService private constructor(context: Context) {
     }
 
     private fun setConsentId() {
-        val rootRepository = RootRepositoryImpl(ApiClient.api)
+        val rootRepository = RootRepositoryImpl(ApiClient.create(contextFinal))
         val sendRootDataUseCase = SendRootDataUseCase(rootRepository)
         val preferencesHelper = PreferencesHelper(contextFinal)
 
