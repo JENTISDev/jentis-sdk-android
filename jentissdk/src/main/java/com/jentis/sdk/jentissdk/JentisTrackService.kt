@@ -15,6 +15,7 @@ import com.jentis.sdk.jentissdk.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class JentisTrackService private constructor(context: Context) :
     Application.ActivityLifecycleCallbacks {
@@ -23,18 +24,20 @@ class JentisTrackService private constructor(context: Context) :
     private lateinit var userViewModel: UserViewModel
     private var userId = ""
     private var consentId = ""
+    private var SESSION_ID = ""
     private var activityReferences = 0
     private var isActivityChangingConfigurations = false
     private val SESSION_ACTION_NEW = "new"
     private val SESSION_ACTION_UPDATE = "update"
     private val SESSION_ACTION_END = "end"
-    private val sessionTimeout = 30 * 60 * 1000 // Timeout de 30 minutos
+    private val sessionTimeout = 1 * 60 * 1000 // Timeout de 30 minutos
     private val customLifecycleOwner = CustomLifecycleOwner()
     private var CONTAINER = ""
     private var ENVIRONMENT = ""
     private var VERSION = ""
     private var DEBUG_CODE = ""
     private var TRACK_DOMAIN = ""
+    private var UPDATED_SESSION = false
 
     private fun init() {
         val preferencesHelper = PreferencesHelper(contextFinal)
@@ -63,6 +66,7 @@ class JentisTrackService private constructor(context: Context) :
     }
 
     private fun saveSessionId(sessionId: String, sessionAction: String) {
+        SESSION_ID = sessionId
         val session = "$sessionId#$sessionAction"
         userViewModel.saveSessionId(session)
         saveSessionTime()
@@ -113,9 +117,22 @@ class JentisTrackService private constructor(context: Context) :
         userViewModel.saveUserId(userId)
     }
 
+    private fun endSessionForNewSession() {
+        CoroutineScope(Dispatchers.Default).launch {
+
+            withContext(Dispatchers.Main) {
+                saveSessionId(SESSION_ID, SESSION_ACTION_END)
+                saveSessionId(JentisUtils.getNewSessionID(), SESSION_ACTION_NEW)
+            }
+        }
+    }
+
     private fun endSession() {
         CoroutineScope(Dispatchers.Default).launch {
-            saveSessionId(JentisUtils.getNewSessionID(), SESSION_ACTION_END)
+
+            withContext(Dispatchers.Main) {
+                saveSessionId(SESSION_ID, SESSION_ACTION_END)
+            }
         }
     }
 
@@ -146,22 +163,6 @@ class JentisTrackService private constructor(context: Context) :
         customLifecycleOwner.handleStart()
     }
 
-    private fun getSessionId(): String {
-        val customLifecycleOwner = CustomLifecycleOwner()
-        var parts = ""
-
-        userViewModel.sessionId.observe(customLifecycleOwner) {
-            if (it.isNullOrEmpty()) {
-                parts = it.toString()
-            }
-        }
-
-        userViewModel.loadSessionId()
-        customLifecycleOwner.handleStart()
-
-        return parts
-    }
-
     override fun onActivityStarted(activity: Activity) {
         if (activityReferences == 0 && !isActivityChangingConfigurations) {
             userViewModel.loadSessionTimeInit()
@@ -170,11 +171,17 @@ class JentisTrackService private constructor(context: Context) :
                 if (timeInit != null && timeInit > 0) {
                     val timeInBackground = System.currentTimeMillis() - timeInit
 
-                    if (timeInBackground >= sessionTimeout) {
-                        endSession()
-                        saveSessionId(JentisUtils.getNewSessionID(), SESSION_ACTION_NEW)
+                    if (timeInBackground >= sessionTimeout && UPDATED_SESSION.not()) {
+                        UPDATED_SESSION = true
+                        endSessionForNewSession()
                     } else {
-                        saveSessionId(JentisUtils.getNewSessionID(), SESSION_ACTION_UPDATE)
+                        if (consentId.isNotEmpty() && UPDATED_SESSION.not()) {
+                            UPDATED_SESSION = true
+                            saveSessionId(
+                                sessionId = SESSION_ID,
+                                sessionAction = SESSION_ACTION_UPDATE
+                            )
+                        }
                     }
                 }
             }
@@ -185,7 +192,7 @@ class JentisTrackService private constructor(context: Context) :
     override fun onActivityStopped(activity: Activity) {
         activityReferences--
         isActivityChangingConfigurations = activity.isChangingConfigurations
-
+        UPDATED_SESSION = false
         if (activityReferences == 0 && !isActivityChangingConfigurations) {
             saveSessionTime()
         }

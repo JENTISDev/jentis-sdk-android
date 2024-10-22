@@ -12,5 +12,6 @@ class SessionWorker(context: Context, params: WorkerParameters) : Worker(context
     }
 
     private fun performSDKBackgroundTask() {
+
     }
 }
