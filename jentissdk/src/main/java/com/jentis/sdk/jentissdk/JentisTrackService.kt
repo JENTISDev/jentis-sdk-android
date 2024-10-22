@@ -30,7 +30,7 @@ class JentisTrackService private constructor(context: Context) :
     private val SESSION_ACTION_NEW = "new"
     private val SESSION_ACTION_UPDATE = "update"
     private val SESSION_ACTION_END = "end"
-    private val sessionTimeout = 1 * 60 * 1000 // Timeout de 30 minutos
+    private val sessionTimeout = 30 * 60 * 1000 // Timeout de 30 minutos
     private val customLifecycleOwner = CustomLifecycleOwner()
     private var CONTAINER = ""
     private var ENVIRONMENT = ""
