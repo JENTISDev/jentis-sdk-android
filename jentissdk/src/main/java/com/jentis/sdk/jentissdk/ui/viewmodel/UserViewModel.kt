@@ -12,7 +12,12 @@ class UserViewModel(
 ) : ViewModel() {
 
     private val _userId = MutableLiveData<String?>()
+    private val _sessionId = MutableLiveData<String?>()
+    private val _sessiontimeInit = MutableLiveData<Long?>()
     val userId: LiveData<String?> get() = _userId
+    val sessionId: LiveData<String?> get() = _sessionId
+
+    val sessionTimeInit: LiveData<Long?> get() = _sessiontimeInit
 
     fun saveUserId(userId: String) {
         viewModelScope.launch {
@@ -24,6 +29,38 @@ class UserViewModel(
         viewModelScope.launch {
             val userID = preferencesHelper.getUserId()
             _userId.postValue(userID)
+        }
+    }
+
+    fun loadSessionTimeInit() {
+        viewModelScope.launch {
+            val sessionTimeInit = preferencesHelper.getSessionTime()
+            _sessiontimeInit.postValue(sessionTimeInit)
+        }
+    }
+
+    fun saveSessionId(sessionId: String) {
+        viewModelScope.launch {
+            preferencesHelper.saveSessionId(sessionId)
+        }
+    }
+
+    fun saveSessionTime(timeInitSession: Long) {
+        viewModelScope.launch {
+            preferencesHelper.saveSessionTime(timeInitSession)
+        }
+    }
+
+    fun loadSessionId() {
+        viewModelScope.launch {
+            val sessionId = preferencesHelper.getSessionId()
+            _userId.postValue(sessionId)
+        }
+    }
+
+    fun endSession() {
+        viewModelScope.launch {
+            preferencesHelper.endSession()
         }
     }
 }

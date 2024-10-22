@@ -23,12 +23,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Greeting("Android")
-
-                    val jentisTrackService = JentisTrackService.initialize(this)
-                    jentisTrackService.initTracking()
-
-                    jentisTrackService.setConsent()
-
+                    JentisTrackService.getInstance().setConsent()
                 }
             }
         }

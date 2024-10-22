@@ -59,4 +59,6 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
+
+    implementation ("androidx.work:work-runtime:2.9.1")
 }

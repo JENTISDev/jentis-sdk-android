@@ -26,10 +26,16 @@ data class Data(
 
 data class Identifier(
     val user: User,
-    val consent: ConsentIdentifier
+    val consent: ConsentIdentifier,
+    val session : Session
 )
 
 data class User(
+    val id: String,
+    val action: String
+)
+
+data class Session(
     val id: String,
     val action: String
 )

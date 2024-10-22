@@ -10,6 +10,7 @@ import com.jentis.sdk.jentissdk.data.service.model.ConsentIdentifier
 import com.jentis.sdk.jentissdk.data.service.model.Data
 import com.jentis.sdk.jentissdk.data.service.model.Identifier
 import com.jentis.sdk.jentissdk.data.service.model.Root
+import com.jentis.sdk.jentissdk.data.service.model.Session
 import com.jentis.sdk.jentissdk.data.service.model.System
 import com.jentis.sdk.jentissdk.data.service.model.User
 import com.jentis.sdk.jentissdk.data.service.model.Vendors
@@ -29,7 +30,7 @@ class ConsentViewModel(
     private val _sendRootDataState = MutableLiveData<Result<Unit>>()
     fun saveConsentId(consentId: String) {
         viewModelScope.launch {
-                preferencesHelper.saveConsentId(consentId)
+            preferencesHelper.saveConsentId(consentId)
         }
     }
 
@@ -40,11 +41,29 @@ class ConsentViewModel(
         }
     }
 
-    fun sendRootData(consentId: String, userId: String) {
-        val root = createMockedRoot(consentId, userId)
+    fun sendRootData(
+        consentId: String,
+        userId: String,
+        sessionId: String,
+        sessionAction: String,
+        container: String,
+        environment: String,
+        version: String,
+        debugCode: String
+    ) {
+        val root = createMockedRoot(
+            consentId = consentId,
+            userId = userId,
+            sessionId = sessionId,
+            sessionAction = sessionAction,
+            container = container,
+            environment = environment,
+            version = version,
+            debugCode = debugCode
+        )
 
         viewModelScope.launch {
-            val result = sendRootDataUseCase.execute(root)
+            val result = sendRootDataUseCase.execute(root = root)
             if (result.isSuccess) {
                 saveConsentId(consentId)
                 _sendRootDataState.postValue(result)
@@ -52,27 +71,42 @@ class ConsentViewModel(
         }
     }
 
-    private fun createMockedRoot(consentId: String, userId: String): Root {
+    private fun createMockedRoot(
+        consentId: String,
+        userId: String,
+        sessionId: String,
+        sessionAction: String,
+        container: String,
+        environment: String,
+        version: String,
+        debugCode: String
+    ): Root {
         // Mocking the System object
         val system = System(
             type = "app",
-            timestamp = 1655704922774,
+            timestamp = java.lang.System.currentTimeMillis(),
             navigatorUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36",
             initiator = "jts_push_submit"
         )
 
         // Mocking the Configuration object
         val configuration = Configuration(
-            container = "ckion-demo",
-            environment = "live",
-            version = "3",
-            debugcode = "a675b5f1-48d2-43bf-b314-ba4830cda52d"
+            container = container,
+            environment = environment,
+            version = version,
+            debugcode = debugCode
         )
 
         // Mocking the User object
         val user = User(
             id = userId,
             action = "new"
+        )
+
+        // Session
+        val session = Session(
+            id = sessionId,
+            action = sessionAction
         )
 
         // Mocking the ConsentIdentifier object
@@ -95,11 +129,11 @@ class ConsentViewModel(
 
         // Mocking the Consent object
         val consent = Consent(
-            lastupdate = 1720611159546,
+            lastupdate = java.lang.System.currentTimeMillis(),
             data = Data(
-                Identifier(user, consentIdentifier),
+                Identifier(user, consentIdentifier, session),
                 Consent(
-                    1720611159546,
+                    java.lang.System.currentTimeMillis(),
                     null,
                     vendors = vendors,
                     vendorsChanged = vendorsChanged
@@ -112,7 +146,8 @@ class ConsentViewModel(
         // Mocking the Identifier object
         val identifier = Identifier(
             user = user,
-            consent = consentIdentifier
+            consent = consentIdentifier,
+            session = session
         )
 
         // Mocking the Data object

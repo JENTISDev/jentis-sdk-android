@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
-    fun create(context: Context): ApiService {
+    fun create(context: Context, trackDomain: String): ApiService {
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -19,7 +19,7 @@ object ApiClient {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://qc3ipx.ckion-dev.jtm-demo.com")
+            .baseUrl(trackDomain) // "https://qc3ipx.ckion-dev.jtm-demo.com"
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
