@@ -19,4 +19,11 @@ object JentisUtils {
             v.toString(16)
         }
     }
+
+    fun getNewSessionID(): String {
+        val sTime = System.currentTimeMillis()
+        val sRand1 = (Math.random() * 100000).roundToInt()
+        val sRand2 = (Math.random() * 100000).roundToInt()
+        return "$sRand1$sTime$sRand2"
+    }
 }
