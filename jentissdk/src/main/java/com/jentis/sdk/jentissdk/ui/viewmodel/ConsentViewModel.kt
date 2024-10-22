@@ -100,7 +100,7 @@ class ConsentViewModel(
         // Mocking the User object
         val user = User(
             id = userId,
-            action = "new"
+            action = if (userId.isNotEmpty()) "new" else ""
         )
 
         // Session
@@ -112,7 +112,7 @@ class ConsentViewModel(
         // Mocking the ConsentIdentifier object
         val consentIdentifier = ConsentIdentifier(
             id = consentId,
-            action = "new"
+            action = if (consentId.isNotEmpty()) "new" else ""
         )
 
         // Mocking the Vendors object

@@ -42,6 +42,7 @@ class JentisTrackService private constructor(context: Context) :
     private fun init() {
         val preferencesHelper = PreferencesHelper(contextFinal)
         userViewModel = UserViewModel(preferencesHelper)
+        saveSessionId(JentisUtils.getNewSessionID(), SESSION_ACTION_NEW)
         getUserId()
     }
 
